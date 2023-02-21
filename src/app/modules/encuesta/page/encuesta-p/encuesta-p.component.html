@@ -1,0 +1,116 @@
+<div class="hoja_view">
+    <div class="fondo-content">
+        <div class="contenido">
+            <h2>Encuesta</h2>
+            <div class="filtro_sucursal">
+                <div class="d-flex flex-column">
+                    <label>Provincia:</label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Provincia</mat-label>
+                        <mat-select (selectionChange)="onSelectProvincia($event.value)" [(ngModel)]="selectPro">
+                            <mat-option>SELECIONA</mat-option>
+                            <mat-option *ngFor="let provincia of listFilter.filProvincia" [value]="provincia.key">
+                                {{provincia.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex flex-column">
+                    <label>Ciudad:</label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ciudad</mat-label>
+                        <mat-select (selectionChange)="onSelectCiudad($event.value)">
+                            <mat-option>SELECIONA</mat-option>
+                            <mat-option *ngFor="let ciudad of listFilter.filCiudad" [value]="ciudad.key">
+                                {{ciudad.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex flex-column">
+                    <label>Sucursal:</label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sucursal</mat-label>
+                        <mat-select [(ngModel)]="sucursal">
+                            <mat-option>SELECIONA</mat-option>
+                            <mat-option *ngFor="let sucursal of listFilter.filSucursal" [value]="sucursal.key">
+                                {{sucursal.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="info_person">
+                <div class="d-flex flex-column col-6">
+                    <label>Nombre y Apell:</label>
+                    <mat-form-field appearance="outline" class="w-80">
+                        <input type="text" matInput [formControl]="nomAppFormControl" placeholder="Nombre y Apellido">
+                        <mat-error *ngIf="nomAppFormControl.hasError('required')">
+                            Ingresar el <strong>Nombre completo</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex flex-column col-6">
+                    <label>CLI:</label>
+                    <mat-form-field appearance="outline" class="w-80">
+                        <input type="number" matInput [formControl]="CLIFormControl" placeholder="095312182">
+                        <mat-error *ngIf="CLIFormControl.hasError('required')">
+                            Ingresar el <strong>CLI</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex flex-column col-6">
+                    <label>Edad:</label>
+                    <mat-form-field appearance="outline" class="w-80">
+                        <input type="number" matInput [formControl]="edadFormControl" placeholder="095312182" max="120">
+                        <mat-error *ngIf="edadFormControl.hasError('required') && !edadFormControl.hasError('max')">
+                            Ingrese su <strong>edad</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex flex-column col-6">
+                    <label>Sexo:</label>
+                    <mat-form-field appearance="outline" class="w-80">
+                        <mat-select [(ngModel)]="sexoModel" placeholder="Sexo" >
+                            <mat-option>SELECIONA</mat-option>
+                            <mat-option value="F">Femenino</mat-option>
+                            <mat-option value="M">Masculino</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="preguntas" *ngFor="let pregunta of lisPregunta; let i= index">
+                <div class="d-flex flex-column ">
+                    <label>{{i}}. {{pregunta.descripcion}}</label>
+                    <mat-radio-group [(ngModel)]="pregunta_siNo[i]" *ngIf="pregunta.SiNo" class="pt-2">
+                        <mat-radio-button value="1">Si</mat-radio-button>
+                        <mat-radio-button value="0">No</mat-radio-button>
+                    </mat-radio-group>
+                    <div *ngIf="pregunta.min  && pregunta.max">
+                        <span *ngIf="pregunta.min  && pregunta.max">{{pregunta.min}}</span>
+                        <mat-slider *ngIf="pregunta.min && pregunta.max"
+                            class="example-margin"
+                            [max]="pregunta.max"
+                            [min]="pregunta.min"
+                            step="1"
+                            showTickMarks
+                            [discrete]="thumbLabel"
+                            [displayWith]="formatLabel"
+                            [(ngModel)]="enum[i]">
+                        <input matSliderThumb >
+                        </mat-slider>
+                        <span *ngIf="pregunta.max  && pregunta.max">{{pregunta.max}}</span>
+                    </div>
+                    <mat-form-field  *ngIf="pregunta.comentario" appearance="outline" >
+                        <textarea  matInput [(ngModel)]="comentario" ></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button  class="btn btn-primary " (click)="Enviar()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
